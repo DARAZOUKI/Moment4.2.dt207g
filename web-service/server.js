@@ -27,5 +27,5 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/protected', require('./routes/protected'));
 
 // Start the server
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
