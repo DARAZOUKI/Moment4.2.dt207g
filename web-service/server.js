@@ -24,10 +24,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
         process.exit(1); 
     });
 
-// Define a root route
-app.get('/', (req, res) => {
-    res.send('Welcome to the server! The server is running successfully.');
-});
+
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
