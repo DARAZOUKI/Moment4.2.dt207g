@@ -11,10 +11,12 @@ body {
   padding: 20px;
 }
 
-h1, h2 {
-  color: #333;
+h1{
+  text-align: center;
 }
-
+h2 {
+  color: #1c1c1c;
+}
 form {
   background-color: #fff;
   padding: 20px;
