@@ -1,50 +1,96 @@
-document.getElementById('register-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+async function register() {
     const username = document.getElementById('register-username').value;
-    const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
-
+  
     try {
-        const response = await fetch('http://localhost:10000/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, email, password }),
-        });
-
-        if (response.ok) {
-            console.log('User registered successfully');
-        } else {
-            console.error('Failed to register');
-        }
+      const response = await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        document.getElementById('register-message').innerText = errorData.error || 'An error occurred';
+      } else {
+        const data = await response.json();
+        document.getElementById('register-message').innerText = data.message || 'Registration successful';
+      }
     } catch (error) {
-        console.error('Network error', error);
+      console.error('Error during registration:', error);
+      document.getElementById('register-message').innerText = 'An error occurred';
     }
-});
-
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  }
+  
+  async function login() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
-
-    try {
-        const response = await fetch('http://localhost:10000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log('User logged in successfully', data);
-            sessionStorage.setItem('jwt', data.token);
-        } else {
-            console.error('Failed to log in');
-        }
-    } catch (error) {
-        console.error('Network error', error);
+  
+    const response = await fetch('http://localhost:8000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+  
+    const data = await response.json();
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      document.getElementById('login-message').innerText = 'Login successful!';
+      document.getElementById('protected-content').style.display = 'block';
+      document.getElementById('login-form').style.display = 'block';
+      document.getElementById('register-form').style.display = 'none';
+    } else {
+      document.getElementById('login-message').innerText = data.error;
     }
-});
+  }
+  
+  async function getProtectedContent() {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:8000/api/protected', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'  }
+    });
+  
+    const data = await response.json();
+    document.getElementById('protected-message').innerText = data.message || data.error;
+  }
+  
+  function logout() {
+    localStorage.removeItem('token');
+    document.getElementById('protected-content').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('register-form').style.display = 'block';
+    
+    // Clear the input fields and messages
+    document.getElementById('register-username').value = '';
+    document.getElementById('register-password').value = '';
+    document.getElementById('login-username').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('register-message').innerText = '';
+    document.getElementById('login-message').innerText = '';
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      document.getElementById('protected-content').style.display = 'block';
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('register-form').style.display = 'none';
+    } else {
+      // Clear the input fields and messages on page load
+      document.getElementById('register-username').value = '';
+      document.getElementById('register-password').value = '';
+      document.getElementById('login-username').value = '';
+      document.getElementById('login-password').value = '';
+      document.getElementById('register-message').innerText = '';
+      document.getElementById('login-message').innerText = '';
+    }
+  });
+  document.getElementById('register-button').addEventListener('click', register);
+document.getElementById('login-button').addEventListener('click', login);
+  
