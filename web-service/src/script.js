@@ -3,7 +3,7 @@ async function register() {
     const password = document.getElementById('register-password').value;
   
     try {
-      const response = await fetch('http://localhost:8000/api/register', {
+      const response = await fetch('https://moment4-2-dt207g.onrender.com/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ async function register() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
   
-    const response = await fetch('http://localhost:8000/api/login', {
+    const response = await fetch('https://moment4-2-dt207g.onrender.com/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ async function register() {
   
   async function getProtectedContent() {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:8000/api/protected', {
+    const response = await fetch('https://moment4-2-dt207g.onrender.com/api/protected', {
       method: 'GET',
       headers: { 'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'  }
