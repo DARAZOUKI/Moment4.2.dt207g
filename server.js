@@ -42,5 +42,5 @@ app.get('/api/protected', verifyToken, authController.protected);
     res.sendFile(path.join(__dirname, 'src', 'index.html'));
   });
 // Start the server
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
