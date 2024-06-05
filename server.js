@@ -5,8 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const authController = require('./new/authController');
-const { verifyToken } = require('./middleware/authMiddleware');
+const authController = require('./web-service/new/authController');
+const { verifyToken } = require('./web-service/middleware/authMiddleware');
 
 require('dotenv').config();
 
