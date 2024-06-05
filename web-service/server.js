@@ -31,13 +31,15 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
         process.exit(1); 
     });
 
-    /*app.get('/', (req, res) => {
-        res.sendFile(__dirname + '/src/index.html');
-*/
+ 
 // Routes
 app.post('/api/register', authController.register);
 app.post('/api/login', authController.login);
 app.get('/api/protected', verifyToken, authController.protected);
+ // Catch-all route to serve the index.html file
+ app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'index.html'));
+  });
 // Start the server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
