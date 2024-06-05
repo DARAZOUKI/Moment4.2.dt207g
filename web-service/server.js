@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path'); 
 const dotenv = require('dotenv');
-const authController = require('./web-service/new/authController');
-const { verifyToken } = require('./web-service/middleware/authMiddleware');
+const authController = require('./new/authController');
+const { verifyToken } = require('./middleware/authMiddleware');
 
 require('dotenv').config();
 
